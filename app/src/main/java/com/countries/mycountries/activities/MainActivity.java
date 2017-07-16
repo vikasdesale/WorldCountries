@@ -1,7 +1,9 @@
-package com.countries.mycountries;
+package com.countries.mycountries.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.countries.mycountries.R;
 
 public class MainActivity extends AppCompatActivity {
 
