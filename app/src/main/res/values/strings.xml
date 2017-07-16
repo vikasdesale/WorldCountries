@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">MyCountries</string>
+    <string name="empty_countries_list">Empty List</string>
 </resources>
