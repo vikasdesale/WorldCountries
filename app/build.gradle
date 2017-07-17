@@ -53,6 +53,8 @@ dependencies {
     compile 'io.reactivex.rxjava2:rxjava:2.0.6'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
     compile 'com.squareup.retrofit2:adapter-rxjava2:2.2.0'
+    //rxBinding
+    compile 'com.jakewharton.rxbinding2:rxbinding-design:2.0.0'
     //image loader
     compile 'com.github.bumptech.glide:glide:3.7.0'
     //getter and setters

@@ -11,18 +11,27 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.countries.mycountries.R;
 import com.countries.mycountries.model.Worldpopulation;
+import com.jakewharton.rxbinding2.view.RxView;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.Observable;
+import io.reactivex.subjects.PublishSubject;
 
 import static com.countries.mycountries.R.drawable.vikas1;
 
 public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.ViewHolder> {
 
-    public ClickListener clickListener;
+    private final PublishSubject<Integer> onClickSubject = PublishSubject.create();
+
+    public Observable<Integer> getItemClickSignal() {
+        return onClickSubject;
+    }
+
     Context mContext;
+    View view;
     private ArrayList<Worldpopulation> mWorldPopulations;
     public CountryAdapter(Context context, ArrayList<Worldpopulation> worldpopulations) {
         mContext=context;
@@ -33,7 +42,7 @@ public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.ViewHold
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_card, parent, false);
+        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_card, parent, false);
         return new ViewHolder(view);
     }
 
@@ -52,30 +61,34 @@ public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.ViewHold
                 .into(holder.countryImage);
     }
 
+
     @Override
-    public int getItemCount() {
-        return mWorldPopulations.size();
-    }
-    public interface ClickListener {
-         void itemClicked(View view, int position,CountryAdapter.ViewHolder vh);
+    public long getItemId(int position) {
+        return position;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+    @Override
+    public int getItemCount() {
+      return mWorldPopulations == null ? 0 : mWorldPopulations.size();
+    }
+
+
+    public class ViewHolder extends RecyclerView.ViewHolder  {
 
         @BindView(R.id.countryImage)
         ImageView countryImage;
-        public ViewHolder(View view) {
-            super(view);
-            ButterKnife.bind(this, itemView);
-            view.setOnClickListener(this);
+        public ViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, view);
+            RxView.clicks(itemView)
+                    .map(__ -> getAdapterPosition())
+                    .subscribe(onClickSubject);
         }
 
-        @Override
-        public void onClick(View view) {
-            ViewHolder vh=new ViewHolder(view);
-            if (clickListener != null) {
-                clickListener.itemClicked(view,getAdapterPosition(), vh);
-            }
-        }
+
+
     }
+   
+
 }
