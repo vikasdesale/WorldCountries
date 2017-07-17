@@ -2,11 +2,15 @@
 package com.countries.mycountries.model;
 
 
+import org.parceler.Parcel;
+
 import lombok.Getter;
 import lombok.Setter;
 
+
 @Getter
 @Setter
+@Parcel
 public class Worldpopulation {
 
     public Integer rank;

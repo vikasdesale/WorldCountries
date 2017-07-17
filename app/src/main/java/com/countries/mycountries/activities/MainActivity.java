@@ -15,6 +15,8 @@ import com.countries.mycountries.model.Worldpopulation;
 import com.countries.mycountries.network.ApiClient;
 import com.countries.mycountries.network.ApiInterface;
 
+import org.parceler.Parcels;
+
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -30,8 +32,9 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
     CountryAdapter mAdapter;
-    private ArrayList<Worldpopulation> mWorldPopulations= new ArrayList<>();
+    private ArrayList<Worldpopulation> mWorldPopulations;
     private CompositeDisposable mCompositeDisposable;
+    private final String Country_Parse = "v";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,35 +46,59 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mCompositeDisposable = new CompositeDisposable();
-        loadJSON();
+        if (savedInstanceState == null) {
+            loadJSON();
+
+        } else {
+            mWorldPopulations =(ArrayList<Worldpopulation>)Parcels.unwrap(savedInstanceState.getParcelable(Country_Parse));
+            setupAdapter(mWorldPopulations);
+        }
 
     }
-    private void loadJSON() {
+    private  void loadJSON() {
 
         ApiInterface apiService =
                 ApiClient.getClient().create(ApiInterface.class);
-
         mCompositeDisposable.add(apiService.getCountries()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(this::handleResponse,this::handleError));
+                .subscribe(this::handleResponse,this::handleError)
+        );
     }
 
     private void handleResponse(CountryList countryLists) {
 
         mWorldPopulations= (ArrayList<Worldpopulation>) countryLists.getWorldpopulation();
-        mAdapter = new CountryAdapter(this,mWorldPopulations);
-        mRecyclerView.setAdapter(mAdapter);
+        setupAdapter(mWorldPopulations);
     }
 
+    private void handleClick(Integer position) {
+        Toast.makeText(MainActivity.this, "MSG:" + position, Toast.LENGTH_SHORT).show();
+
+    }
     private void handleError(Throwable error) {
 
         Toast.makeText(this, "Error "+error.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
     }
-
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putParcelable(Country_Parse, Parcels.wrap(mWorldPopulations));
+        super.onSaveInstanceState(outState);
+    }
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mCompositeDisposable.clear();
+        mCompositeDisposable.dispose();
+
+    }
+
+
+    public void setupAdapter(ArrayList<Worldpopulation> world) {
+        mAdapter = new CountryAdapter(this,world);
+        mAdapter.getItemClickSignal()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(this::handleClick,this::handleError);
+        mRecyclerView.setAdapter(mAdapter);
     }
 }
