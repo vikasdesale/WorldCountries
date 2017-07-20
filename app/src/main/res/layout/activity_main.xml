@@ -7,11 +7,26 @@
 
     <include layout="@layout/appbar" />
 
+    <LinearLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" >
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clipToPadding="false"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
+        android:clipToPadding="false" />
+    <!-- empty list -->
+    <TextView
+        android:id="@+id/country_empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_anchor="@+id/recycler_view"
+        app:layout_anchorGravity="fill"
+        android:textColor="@color/accent"
+        android:visibility="gone"
+        android:gravity="center_horizontal|center_vertical" />
+    </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

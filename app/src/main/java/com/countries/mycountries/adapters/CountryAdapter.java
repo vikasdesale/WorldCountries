@@ -20,7 +20,9 @@ import butterknife.ButterKnife;
 import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
 
-import static com.countries.mycountries.R.drawable.vikas1;
+import static com.countries.mycountries.R.drawable.error;
+import static com.countries.mycountries.R.drawable.loading;
+
 
 public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.ViewHolder> {
 
@@ -54,7 +56,8 @@ public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.ViewHold
         //Got Advantages why to use Glide over picasso that's why replaced picasso.
         Glide.with(mContext).load(image)
                 .thumbnail(0.1f)
-                .error(vikas1)
+                .error(error)
+                .placeholder(loading)
                 .crossFade() //animation
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .skipMemoryCache(true)
