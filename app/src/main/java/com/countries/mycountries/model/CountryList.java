@@ -1,6 +1,8 @@
 
 package com.countries.mycountries.model;
 
+import android.support.annotation.Nullable;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -12,7 +14,8 @@ import lombok.Setter;
 @Setter
 public class CountryList {
 
+    @Nullable
     @SerializedName("worldpopulation")
-    public List<Worldpopulation> worldpopulation = null;
+    private List<Worldpopulation> worldpopulation = null;
 
 }

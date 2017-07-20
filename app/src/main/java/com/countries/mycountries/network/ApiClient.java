@@ -1,5 +1,7 @@
 package com.countries.mycountries.network;
 
+import android.support.annotation.Nullable;
+
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -10,9 +12,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
 
-    public static final String BASE_URL = "http://www.androidbegin.com/";
+    private static final String BASE_URL = "http://www.androidbegin.com/";
+    @Nullable
     private static Retrofit retrofit = null;
 
+    @Nullable
     public static Retrofit getClient() {
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()

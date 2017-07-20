@@ -4,6 +4,8 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,16 +31,18 @@ public class CountryDialogFragment extends DialogFragment {
 
 
     Unbinder unbinder;
-    String imgURL;
-    Bundle mArgs;
+    @Nullable
+    private String imgURL;
+    private Bundle mArgs;
+    @Nullable
     @BindView(R.id.fullimage)
     ImageView fullimage;
 
+    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         LayoutInflater layoutInflaterAndroid = LayoutInflater.from(getActivity());
-        View layout = layoutInflaterAndroid.inflate(R.layout.fullimg,
-                null);
+        View layout = layoutInflaterAndroid.inflate(R.layout.fullimg, null);
         unbinder = ButterKnife.bind(this, layout);
 
         mArgs = getArguments();
@@ -54,7 +58,7 @@ public class CountryDialogFragment extends DialogFragment {
                 .placeholder(loading)
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .skipMemoryCache(true)
-                .into(fullimage);
+                .into(fullimage != null ? fullimage : null);
         imageDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         imageDialog.setContentView(layout);
         imageDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));

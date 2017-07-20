@@ -38,14 +38,12 @@ dependencies {
     testCompile 'junit:junit:4.12'
 
     //smooth progress bar
-    compile 'com.github.castorflex.smoothprogressbar:library:1.0.0'
+    compile 'com.github.castorflex.smoothprogressbar:library-circular:1.0.0'
 
     //butter knief dependency injection
     compile 'com.jakewharton:butterknife:8.4.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
 
-    //app intro
-    compile 'com.github.apl-devs:appintro:v4.2.0'
     // retrofit, gson
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'

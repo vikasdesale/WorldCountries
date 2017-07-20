@@ -8,8 +8,9 @@
 
     <ImageView
         android:id="@+id/fullimage"
-      android:layout_width="match_parent"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:contentDescription="@string/full_screen_country_image"
         android:scaleType="fitXY"
         android:layout_gravity="center" />
 

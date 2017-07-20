@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">MyCountries</string>
-    <string name="empty_countries_list">Empty List</string>
     <string name="no_network_found">No Network Found</string>
-    <string name="data_not_found">Data is Not Found</string>
+    <string name="data_not_found">Countries Data is Not Found</string>
     <string name="server_error">Server Error</string>
+    <string name="full_screen_country_image">Full Screen country Image</string>
+    <string name="country_image">Country Image</string>
 </resources>

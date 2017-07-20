@@ -17,6 +17,7 @@
                 android:id="@+id/countryImage"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:contentDescription="@string/country_image"
                 android:scaleType="fitXY"
                 android:background="?attr/selectableItemBackgroundBorderless"
                />
