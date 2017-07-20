@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="card_countries_radius">3dp</dimen>
+    <dimen name="card_margin">5dp</dimen>
+    <dimen name="overPadding">5dp</dimen>
+
+</resources>
