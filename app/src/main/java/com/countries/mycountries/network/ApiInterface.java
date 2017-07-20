@@ -1,5 +1,7 @@
 package com.countries.mycountries.network;
 
+import android.support.annotation.NonNull;
+
 import com.countries.mycountries.model.CountryList;
 
 import io.reactivex.Observable;
@@ -13,6 +15,7 @@ public interface ApiInterface {
 
 
 
-    @GET("tutorial/jsonparsetutorial.xt")
+    @NonNull
+    @GET("tutorial/jsonparsetutorial.txt")
     Observable<CountryList> getCountries();
 }

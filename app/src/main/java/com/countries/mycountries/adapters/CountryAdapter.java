@@ -1,6 +1,8 @@
 package com.countries.mycountries.adapters;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,28 +30,30 @@ public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.ViewHold
 
     private final PublishSubject<Integer> onClickSubject = PublishSubject.create();
 
+    @NonNull
     public Observable<Integer> getItemClickSignal() {
         return onClickSubject;
     }
 
-    Context mContext;
-    View view;
-    private ArrayList<Worldpopulation> mWorldPopulations;
+    private final Context mContext;
+    private View view;
+    private final ArrayList<Worldpopulation> mWorldPopulations;
     public CountryAdapter(Context context, ArrayList<Worldpopulation> worldpopulations) {
         mContext=context;
         mWorldPopulations = worldpopulations;
 }
 
 
+    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_card, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Worldpopulation worldpopulation=mWorldPopulations.get(position);
         String image=worldpopulation.getFlag();
 
@@ -61,7 +65,7 @@ public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.ViewHold
                 .crossFade() //animation
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .skipMemoryCache(true)
-                .into(holder.countryImage);
+                .into(holder.countryImage != null ? holder.countryImage : null);
     }
 
 
@@ -79,9 +83,10 @@ public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.ViewHold
 
     public class ViewHolder extends RecyclerView.ViewHolder  {
 
+        @Nullable
         @BindView(R.id.countryImage)
         ImageView countryImage;
-        public ViewHolder(View itemView) {
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, view);
             RxView.clicks(itemView)

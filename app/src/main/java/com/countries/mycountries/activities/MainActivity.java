@@ -1,6 +1,8 @@
 package com.countries.mycountries.activities;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,6 +25,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import fr.castorflex.android.circularprogressbar.CircularProgressBar;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -30,13 +33,19 @@ import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
 
+    @Nullable
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @Nullable
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
     CountryAdapter mAdapter;
+    @Nullable
     @BindView(R.id.country_empty)
     TextView countryEmpty;
+    @BindView(R.id.progressbar)
+    CircularProgressBar progressBar;
+
     private ArrayList<Worldpopulation> mWorldPopulations;
     private CompositeDisposable mCompositeDisposable;
     private final String Country_Parse = "v";
@@ -44,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<CountryList> countryList;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
@@ -55,15 +64,17 @@ public class MainActivity extends AppCompatActivity {
         mCompositeDisposable = new CompositeDisposable();
         if (!NetworkUtil.isNetworkConnected(this)) {
             mRecyclerView.setVisibility(View.GONE);
+            progressBar.setVisibility(View.GONE);
             countryEmpty.setText(R.string.no_network_found);
             countryEmpty.setVisibility(View.VISIBLE);
         } else {
+            progressBar.setVisibility(View.VISIBLE);
             mRecyclerView.setVisibility(View.VISIBLE);
             countryEmpty.setVisibility(View.GONE);
             if (savedInstanceState == null) {
                 loadJSON();
             } else {
-                mWorldPopulations = (ArrayList<Worldpopulation>) Parcels.unwrap(savedInstanceState.getParcelable(Country_Parse));
+                mWorldPopulations = Parcels.unwrap(savedInstanceState.getParcelable(Country_Parse));
                 setupAdapter(mWorldPopulations);
             }
         }
@@ -80,11 +91,11 @@ public class MainActivity extends AppCompatActivity {
         );
     }
 
-    private void handleResponse(CountryList countryLists) {
+    private void handleResponse(@NonNull CountryList countryLists) {
         mWorldPopulations = (ArrayList<Worldpopulation>) countryLists.getWorldpopulation();
-        if(mWorldPopulations!=null) {
+        if (mWorldPopulations != null) {
             setupAdapter(mWorldPopulations);
-        }else{
+        } else {
             mRecyclerView.setVisibility(View.GONE);
             countryEmpty.setText(R.string.data_not_found);
             countryEmpty.setVisibility(View.VISIBLE);
@@ -104,14 +115,15 @@ public class MainActivity extends AppCompatActivity {
 
     private void handleError(Throwable error) {
 
-      //  Toast.makeText(this, "Error " + error.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+        //  Toast.makeText(this, "Error " + error.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+        progressBar.setVisibility(View.GONE);
         mRecyclerView.setVisibility(View.GONE);
         countryEmpty.setText(R.string.server_error);
         countryEmpty.setVisibility(View.VISIBLE);
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         if (mWorldPopulations != null) {
             outState.putParcelable(Country_Parse, Parcels.wrap(mWorldPopulations));
         }
@@ -129,6 +141,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void setupAdapter(ArrayList<Worldpopulation> world) {
+        progressBar.setVisibility(View.GONE);
         mAdapter = new CountryAdapter(this, world);
         clickDispose = mAdapter.getItemClickSignal()
                 .observeOn(AndroidSchedulers.mainThread())

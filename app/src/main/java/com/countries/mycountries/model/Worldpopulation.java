@@ -13,10 +13,10 @@ import lombok.Setter;
 @Parcel
 public class Worldpopulation {
 
-    public Integer rank;
-    public String country;
-    public String population;
-    public String flag;
+    Integer rank;
+    String country;
+    String population;
+    String flag;
 
     /**
      * No args constructor for use in serialization
