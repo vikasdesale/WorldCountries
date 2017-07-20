@@ -13,6 +13,6 @@ public interface ApiInterface {
 
 
 
-    @GET("tutorial/jsonparsetutorial.txt")
+    @GET("tutorial/jsonparsetutorial.xt")
     Observable<CountryList> getCountries();
 }
